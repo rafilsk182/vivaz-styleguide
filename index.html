@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vivaz — Design Tokens & Style Guide</title>
+<style>
+  /* ===== TOKENS ===== */
+  :root {
+    --color-roxo-500: #960064;
+    --color-roxo-hover: #7a0051;
+    --color-turquesa-500: #32C8C8;
+    --color-amarelo-400: #FFD200;
+    --color-dark-900: #0A0C10;
+    --color-dark-800: #36383A;
+    --color-dark-600: #4D4D4F;
+    --color-dark-500: #66676A;
+    --color-dark-300: #969696;
+    --color-dark-200: #ACAEB2;
+    --color-light-100: #FFFFFF;
+    --color-light-200: #F0F1F2;
+    --color-light-300: #F1F1F1;
+    --color-light-400: #E4E4E4;
+    --color-light-500: #E0E0E0;
+    --color-success: #1F6743;
+    --color-warning: #FFD200;
+    --color-error: #D7332A;
+    --color-info: #3146A3;
+    --font-primary: 'Graphie', 'Nunito Sans', Arial, sans-serif;
+    --font-secondary: 'Nunito Sans', Arial, sans-serif;
+    --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+    --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-10: 40px;
+    --space-12: 48px; --space-14: 56px; --space-16: 64px; --space-20: 80px;
+    --radius-sm: 4px; --radius-md: 8px; --radius-lg: 16px;
+    --radius-full: 50px; --radius-card: 78px; --radius-hero: 116px;
+    --shadow-sm: 0 1px 3px rgba(10,12,16,0.08);
+    --shadow-md: 0 4px 12px rgba(10,12,16,0.12);
+    --shadow-lg: 0 8px 24px rgba(10,12,16,0.16);
+  }
+
+  /* ===== RESET & BASE ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-primary);
+    background: var(--color-light-200);
+    color: var(--color-dark-900);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* ===== LAYOUT ===== */
+  .app { display: flex; min-height: 100vh; }
+
+  /* Sidebar */
+  .sidebar {
+    width: 220px;
+    flex-shrink: 0;
+    background: var(--color-dark-900);
+    position: fixed;
+    top: 0; left: 0;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 100;
+    padding: 0 0 32px;
+  }
+  .sidebar-logo {
+    padding: 24px 20px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 8px;
+  }
+  .sidebar-logo .brand {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--color-amarelo-400);
+    letter-spacing: -0.02em;
+  }
+  .sidebar-logo .version {
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+    margin-top: 2px;
+  }
+  .sidebar nav a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 20px;
+    color: rgba(255,255,255,0.55);
+    text-decoration: none;
+    font-size: 13px;
+    transition: all 0.15s;
+    border-left: 2px solid transparent;
+  }
+  .sidebar nav a:hover { color: #fff; background: rgba(255,255,255,0.05); }
+  .sidebar nav a.active { color: var(--color-amarelo-400); border-left-color: var(--color-amarelo-400); background: rgba(255,208,0,0.06); }
+  .sidebar nav .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+    padding: 16px 20px 6px;
+  }
+  .sidebar nav .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* Main content */
+  .main {
+    margin-left: 220px;
+    flex: 1;
+    padding: 40px 48px;
+    max-width: calc(100% - 220px);
+  }
+
+  /* ===== SECTIONS ===== */
+  .section {
+    margin-bottom: 64px;
+    scroll-margin-top: 32px;
+  }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 28px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--color-light-400);
+  }
+  .section-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--color-dark-900);
+    letter-spacing: -0.02em;
+  }
+  .section-count {
+    font-size: 12px;
+    color: var(--color-dark-300);
+    background: var(--color-light-300);
+    padding: 2px 8px;
+    border-radius: 20px;
+  }
+
+  /* ===== TOKENS TABLE ===== */
+  .token-grid {
+    display: grid;
+    gap: 2px;
+  }
+  .token-row {
+    display: grid;
+    grid-template-columns: 240px 1fr auto;
+    align-items: center;
+    gap: 16px;
+    background: var(--color-light-100);
+    padding: 10px 16px;
+    border-radius: 6px;
+    transition: box-shadow 0.15s;
+  }
+  .token-row:hover { box-shadow: var(--shadow-sm); }
+  .token-name {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: var(--color-roxo-500);
+    word-break: break-all;
+  }
+  .token-desc { font-size: 12px; color: var(--color-dark-500); }
+  .token-value {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    color: var(--color-dark-600);
+    background: var(--color-light-200);
+    padding: 3px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .token-value:hover { background: var(--color-light-400); }
+  .token-value.copied { background: #d4edda; color: #1F6743; }
+
+  /* ===== COLOR SECTION ===== */
+  .color-group { margin-bottom: 32px; }
+  .color-group-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-dark-300);
+    margin-bottom: 12px;
+  }
+  .color-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 8px;
+  }
+  .color-card {
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--color-light-100);
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .color-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .color-swatch { height: 72px; }
+  .color-info { padding: 10px 12px; }
+  .color-hex {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-dark-800);
+  }
+  .color-name { font-size: 11px; color: var(--color-dark-400); margin-top: 2px; }
+  .color-token { font-family: 'Courier New', monospace; font-size: 10px; color: var(--color-roxo-500); margin-top: 4px; }
+
+  /* ===== TYPOGRAPHY SECTION ===== */
+  .type-scale { display: grid; gap: 2px; }
+  .type-row {
+    display: grid;
+    grid-template-columns: 140px 1fr 200px;
+    align-items: center;
+    gap: 24px;
+    background: var(--color-light-100);
+    padding: 16px 20px;
+    border-radius: 6px;
+    transition: box-shadow 0.15s;
+  }
+  .type-row:hover { box-shadow: var(--shadow-sm); }
+  .type-meta { }
+  .type-label { font-size: 11px; font-weight: 700; color: var(--color-dark-300); text-transform: uppercase; letter-spacing: 0.06em; }
+  .type-specs { font-size: 11px; color: var(--color-dark-400); margin-top: 3px; font-family: 'Courier New', monospace; }
+  .type-preview { color: var(--color-dark-900); line-height: 1.2; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .type-token { font-family: 'Courier New', monospace; font-size: 10px; color: var(--color-roxo-500); text-align: right; }
+
+  /* ===== SPACING SECTION ===== */
+  .spacing-grid { display: grid; gap: 8px; }
+  .spacing-row {
+    display: grid;
+    grid-template-columns: 120px 80px 1fr 180px;
+    align-items: center;
+    gap: 16px;
+    background: var(--color-light-100);
+    padding: 12px 16px;
+    border-radius: 6px;
+  }
+  .spacing-bar-wrap { }
+  .spacing-bar { height: 16px; border-radius: 3px; background: var(--color-roxo-500); opacity: 0.15; }
+  .spacing-label { font-family: 'Courier New', monospace; font-size: 11px; color: var(--color-dark-500); }
+
+  /* ===== RADIUS SECTION ===== */
+  .radius-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+  }
+  .radius-card {
+    background: var(--color-light-100);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    box-shadow: var(--shadow-sm);
+    border-radius: 8px;
+  }
+  .radius-box {
+    width: 80px;
+    height: 52px;
+    background: var(--color-light-300);
+    border: 2px solid var(--color-roxo-500);
+    opacity: 0.7;
+  }
+  .radius-info { text-align: center; }
+  .radius-name { font-size: 12px; font-weight: 600; color: var(--color-dark-800); }
+  .radius-val { font-family: 'Courier New', monospace; font-size: 11px; color: var(--color-dark-400); }
+  .radius-token { font-family: 'Courier New', monospace; font-size: 10px; color: var(--color-roxo-500); margin-top: 2px; }
+
+  /* ===== SHADOWS ===== */
+  .shadow-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+  }
+  .shadow-demo {
+    background: var(--color-light-100);
+    height: 80px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+  }
+  .shadow-label { font-size: 11px; font-weight: 600; color: var(--color-dark-600); }
+  .shadow-css { font-family: 'Courier New', monospace; font-size: 9px; color: var(--color-dark-300); text-align: center; padding: 0 12px; }
+
+  /* ===== COMPONENTS SECTION ===== */
+  .component-group { margin-bottom: 40px; }
+  .component-group-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-dark-600);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 16px;
+  }
+  .component-demo {
+    background: var(--color-light-100);
+    padding: 32px;
+    border-radius: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+    box-shadow: var(--shadow-sm);
+  }
+  .component-demo.dark {
+    background: var(--color-dark-900);
+  }
+
+  /* Buttons */
+  .btn {
+    font-family: var(--font-primary);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 24px;
+    border-radius: var(--radius-full);
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-primary { background: var(--color-roxo-500); color: #fff; }
+  .btn-primary:hover { background: var(--color-roxo-hover); }
+  .btn-secondary { background: transparent; border-color: var(--color-roxo-500); color: var(--color-roxo-500); }
+  .btn-secondary:hover { background: var(--color-roxo-500); color: #fff; }
+  .btn-accent { background: var(--color-amarelo-400); color: var(--color-dark-900); border-color: var(--color-amarelo-400); }
+  .btn-accent:hover { background: #e6bd00; }
+  .btn-ghost { background: transparent; border-color: var(--color-light-400); color: var(--color-dark-800); }
+  .btn-ghost:hover { background: var(--color-light-300); }
+  .btn-sm { font-size: 12px; padding: 6px 16px; }
+  .btn-lg { font-size: 16px; padding: 14px 32px; }
+
+  /* Badges */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: var(--radius-full);
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .badge-primary { background: var(--color-roxo-500); color: #fff; }
+  .badge-secondary { background: var(--color-turquesa-500); color: #fff; }
+  .badge-accent { background: var(--color-amarelo-400); color: var(--color-dark-900); }
+  .badge-success { background: #d4edda; color: var(--color-success); }
+  .badge-error { background: #f8d7da; color: var(--color-error); }
+  .badge-neutral { background: var(--color-light-300); color: var(--color-dark-600); }
+
+  /* Inputs */
+  .input-wrap { display: flex; flex-direction: column; gap: 6px; min-width: 240px; }
+  .input-label { font-size: 12px; font-weight: 600; color: var(--color-dark-800); }
+  .input-field {
+    font-family: var(--font-primary);
+    font-size: 14px;
+    padding: 10px 14px;
+    border: 1px solid var(--color-light-400);
+    border-radius: var(--radius-sm);
+    background: var(--color-light-100);
+    color: var(--color-dark-900);
+    outline: none;
+    transition: border 0.15s;
+  }
+  .input-field:focus { border-color: var(--color-roxo-500); box-shadow: 0 0 0 3px rgba(150,0,100,0.1); }
+  .input-helper { font-size: 11px; color: var(--color-dark-400); }
+
+  /* Card empreendimento */
+  .card-empreendimento {
+    background: var(--color-light-100);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    width: 280px;
+    transition: box-shadow 0.25s, transform 0.25s;
+  }
+  .card-empreendimento:hover { box-shadow: var(--shadow-lg); transform: translateY(-3px); }
+  .card-img {
+    height: 160px;
+    background: linear-gradient(135deg, var(--color-roxo-500) 0%, #c40083 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.3);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+  }
+  .card-body { padding: 20px 24px 24px; }
+  .card-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: var(--radius-full);
+    font-size: 10px;
+    font-weight: 700;
+    background: var(--color-light-300);
+    color: var(--color-dark-600);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 10px;
+  }
+  .card-title { font-size: 16px; font-weight: 700; color: var(--color-dark-900); margin-bottom: 4px; }
+  .card-location { font-size: 12px; color: var(--color-dark-400); margin-bottom: 12px; }
+  .card-price { font-size: 13px; color: var(--color-dark-600); }
+  .card-price strong { font-size: 18px; color: var(--color-roxo-500); font-weight: 700; }
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--color-light-400);
+  }
+  .card-cta {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-roxo-500);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .card-cta:hover { color: var(--color-roxo-hover); }
+
+  /* ===== TOAST ===== */
+  #toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--color-dark-900);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: var(--shadow-lg);
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.25s;
+    z-index: 999;
+    pointer-events: none;
+  }
+  #toast.show { transform: translateY(0); opacity: 1; }
+
+  /* ===== HERO ===== */
+  .page-hero {
+    background: var(--color-dark-900);
+    border-radius: 16px;
+    padding: 32px 36px;
+    margin-bottom: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+  }
+  .page-hero h1 { font-size: 28px; font-weight: 700; color: #fff; letter-spacing: -0.02em; }
+  .page-hero p { font-size: 14px; color: rgba(255,255,255,0.5); margin-top: 6px; }
+  .hero-meta { display: flex; gap: 12px; flex-shrink: 0; }
+  .hero-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .hero-badge .num { font-size: 20px; font-weight: 700; color: var(--color-amarelo-400); }
+  .hero-badge .lbl { font-size: 10px; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 0.06em; }
+
+  @media (max-width: 900px) {
+    .main { padding: 24px 20px; }
+    .hero-meta { display: none; }
+    .type-row { grid-template-columns: 100px 1fr; }
+    .type-token { display: none; }
+    .token-row { grid-template-columns: 1fr auto; }
+    .token-desc { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="brand">Vivaz</div>
+      <div class="version">Style Guide v1.0.0 — Abril 2026</div>
+    </div>
+    <nav>
+      <div class="section-label">Tokens</div>
+      <a href="#cores" onclick="setActive(this)">
+        <span class="dot" style="background:#960064"></span> Cores
+      </a>
+      <a href="#tipografia" onclick="setActive(this)">
+        <span class="dot" style="background:#32C8C8"></span> Tipografia
+      </a>
+      <a href="#espacamento" onclick="setActive(this)">
+        <span class="dot" style="background:#FFD200"></span> Espaçamento
+      </a>
+      <a href="#radius" onclick="setActive(this)">
+        <span class="dot" style="background:#ACAEB2"></span> Border Radius
+      </a>
+      <a href="#sombras" onclick="setActive(this)">
+        <span class="dot" style="background:#4D4D4F"></span> Sombras
+      </a>
+      <div class="section-label">Componentes</div>
+      <a href="#botoes" onclick="setActive(this)">
+        <span class="dot" style="background:#960064"></span> Botões
+      </a>
+      <a href="#badges" onclick="setActive(this)">
+        <span class="dot" style="background:#32C8C8"></span> Badges
+      </a>
+      <a href="#inputs" onclick="setActive(this)">
+        <span class="dot" style="background:#969696"></span> Inputs
+      </a>
+      <a href="#cards" onclick="setActive(this)">
+        <span class="dot" style="background:#F1F1F1"></span> Cards
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+
+    <div class="page-hero">
+      <div>
+        <h1>Design Tokens & Style Guide</h1>
+        <p>Extraído do Figma · CMS: Drupal · Stack: Graphie · Clique nos valores para copiar</p>
+      </div>
+      <div class="hero-meta">
+        <div class="hero-badge"><span class="num">19</span><span class="lbl">Cores</span></div>
+        <div class="hero-badge"><span class="num">11</span><span class="lbl">Type styles</span></div>
+        <div class="hero-badge"><span class="num">13</span><span class="lbl">Spacing</span></div>
+      </div>
+    </div>
+
+    <!-- ===== CORES ===== -->
+    <section class="section" id="cores">
+      <div class="section-header">
+        <h2 class="section-title">Cores</h2>
+        <span class="section-count">19 tokens</span>
+      </div>
+
+      <div class="color-group">
+        <div class="color-group-title">Brand</div>
+        <div class="color-grid">
+          <div class="color-card" onclick="copyColor('#960064', this)">
+            <div class="color-swatch" style="background:#960064"></div>
+            <div class="color-info">
+              <div class="color-hex">#960064</div>
+              <div class="color-name">Primary Roxo</div>
+              <div class="color-token">--color-brand-primary</div>
+            </div>
+          </div>
+          <div class="color-card" onclick="copyColor('#7a0051', this)">
+            <div class="color-swatch" style="background:#7a0051"></div>
+            <div class="color-info">
+              <div class="color-hex">#7a0051</div>
+              <div class="color-name">Primary Roxo Hover</div>
+              <div class="color-token">--color-brand-primary-hover</div>
+            </div>
+          </div>
+          <div class="color-card" onclick="copyColor('#32C8C8', this)">
+            <div class="color-swatch" style="background:#32C8C8"></div>
+            <div class="color-info">
+              <div class="color-hex">#32C8C8</div>
+              <div class="color-name">Primary Turquesa</div>
+              <div class="color-token">--color-brand-secondary</div>
+            </div>
+          </div>
+          <div class="color-card" onclick="copyColor('#FFD200', this)">
+            <div class="color-swatch" style="background:#FFD200"></div>
+            <div class="color-info">
+              <div class="color-hex">#FFD200</div>
+              <div class="color-name">Secondary Amarelo</div>
+              <div class="color-token">--color-brand-accent</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="color-group">
+        <div class="color-group-title">Neutrals — Dark</div>
+        <div class="color-grid">
+          <div class="color-card" onclick="copyColor('#0A0C10', this)">
+            <div class="color-swatch" style="background:#0A0C10"></div>
+            <div class="color-info"><div class="color-hex">#0A0C10</div><div class="color-name">Dark 900</div><div class="color-token">--color-dark-900</div></div>
+          </div>
+          <div class="color-card" onclick="copyColor('#36383A', this)">
+            <div class="color-swatch" style="background:#36383A"></div>
+            <div class="color-info"><div class="color-hex">#36383A</div><div class="color-name">Dark 800</div><div class="color-token">--color-dark-800</div></div>
+          </div>
+          <div class="color-card" onclick="copyColor('#4D4D4F', this)">
+            <div class="color-swatch" style="background:#4D4D4F"></div>
+            <div class="color-info"><div class="color-hex">#4D4D4F</div><div class="color-name">Dark 600</div><div class="color-token">--color-dark-600</div></div>
+          </div>
+          <div class="color-card" onclick="copyColor('#66676A', this)">
+            <div class="color-swatch" style="background:#66676A"></div>
+            <div class="color-info"><div class="color-hex">#66676A</div><div class="color-name">Dark 500</div><div class="color-token">--color-dark-500</div></div>
+          </div>
+          <div class="color-card" onclick="copyColor('#969696', this)">
+            <div class="color-swatch" style="background:#969696"></div>
+            <div class="color-info"><div class="color-hex">#969696</div><div class="color-name">Dark 300</div><div class="color-token">--color-dark-300</div></div>
+          </div>
+          <div class="color-card" onclick="copyColor('#ACAEB2', this)">
+            <div class="color-swatch" style="background:#ACAEB2"></div>
+            <div class="color-info"><div class="color-hex">#ACAEB2</div><div class="color-name">Dark 200</div><div class="color-token">--color-dark-200</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="color-group">
+        <div class="color-group-title">Neutrals — Light</div>
+        <div class="color-grid">
+          <div class="color-card" onclick="copyColor('#FFFFFF', this)">
+            <div class="color-swatch" style="background:#FFFFFF; border-bottom:1px solid #E4E4E4"></div>
+            <div class="color-info"><div class="color-hex">#FFFFFF</div><div class="color-name">Light 100</div><div class="color-token">--color-light-100</div></div>
+          </div>
+          <div class="color-card" onclick="copyColor('#F0F1F2', this)">
+            <div class="color-swatch" style="background:#F0F1F2"></div>
+            <div class="color-info"><div class="color-hex">#F0F1F2</div><div class="color-name">Light 200</div><div class="color-token">--color-light-200</div></div>
+          </div>
+          <div class="color-card" onclick="copyColor('#F1F1F1', this)">
+            <div class="color-swatch" style="background:#F1F1F1"></div>
+            <div class="color-info"><div class="color-hex">#F1F1F1</div><div class="color-name">Light 300</div><div class="color-token">--color-light-300</div></div>
+          </div>
+          <div class="color-card" onclick="copyColor('#E4E4E4', this)">
+            <div class="color-swatch" style="background:#E4E4E4"></div>
+            <div class="color-info"><div class="color-hex">#E4E4E4</div><div class="color-name">Light 400</div><div class="color-token">--color-light-400</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="color-group">
+        <div class="color-group-title">Feedback</div>
+        <div class="color-grid">
+          <div class="color-card" onclick="copyColor('#1F6743', this)">
+            <div class="color-swatch" style="background:#1F6743"></div>
+            <div class="color-info"><div class="color-hex">#1F6743</div><div class="color-name">Success</div><div class="color-token">--color-success</div></div>
+          </div>
+          <div class="color-card" onclick="copyColor('#FFD200', this)">
+            <div class="color-swatch" style="background:#FFD200"></div>
+            <div class="color-info"><div class="color-hex">#FFD200</div><div class="color-name">Warning</div><div class="color-token">--color-warning</div></div>
+          </div>
+          <div class="color-card" onclick="copyColor('#D7332A', this)">
+            <div class="color-swatch" style="background:#D7332A"></div>
+            <div class="color-info"><div class="color-hex">#D7332A</div><div class="color-name">Error</div><div class="color-token">--color-error</div></div>
+          </div>
+          <div class="color-card" onclick="copyColor('#3146A3', this)">
+            <div class="color-swatch" style="background:#3146A3"></div>
+            <div class="color-info"><div class="color-hex">#3146A3</div><div class="color-name">Info</div><div class="color-token">--color-info</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TIPOGRAFIA ===== -->
+    <section class="section" id="tipografia">
+      <div class="section-header">
+        <h2 class="section-title">Tipografia</h2>
+        <span class="section-count">Graphie + Nunito Sans</span>
+      </div>
+
+      <div style="background:var(--color-light-100);padding:14px 20px;border-radius:8px;margin-bottom:20px;display:flex;gap:32px;align-items:center;">
+        <div>
+          <div style="font-size:11px;color:var(--color-dark-300);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">Fonte primária</div>
+          <div style="font-size:18px;font-weight:600;color:var(--color-dark-900)">Graphie</div>
+          <div style="font-family:'Courier New',monospace;font-size:11px;color:var(--color-roxo-500)">--font-family-primary</div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--color-dark-300);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">Fonte auxiliar</div>
+          <div style="font-size:18px;font-weight:600;color:var(--color-dark-900);font-family:'Nunito Sans',sans-serif">Nunito Sans</div>
+          <div style="font-family:'Courier New',monospace;font-size:11px;color:var(--color-roxo-500)">--font-family-secondary</div>
+        </div>
+        <div style="margin-left:auto;background:#fff3cd;padding:10px 14px;border-radius:8px;border-left:3px solid #FFD200;max-width:280px">
+          <div style="font-size:11px;font-weight:600;color:#856404">⚠ Atenção</div>
+          <div style="font-size:11px;color:#664d03;margin-top:2px">Graphie é fonte customizada. Confirmar licença e estratégia de carregamento (WOFF2 self-hosted).</div>
+        </div>
+      </div>
+
+      <div class="type-scale">
+        <div class="type-row">
+          <div class="type-meta"><div class="type-label">Display</div><div class="type-specs">48px / 700 / 1.2</div></div>
+          <div class="type-preview" style="font-size:48px;font-weight:700">Vivaz</div>
+          <div class="type-token">--text-display-*</div>
+        </div>
+        <div class="type-row">
+          <div class="type-meta"><div class="type-label">H1</div><div class="type-specs">40px / 600 / 1.2</div></div>
+          <div class="type-preview" style="font-size:40px;font-weight:600">Descubra seu lar</div>
+          <div class="type-token">--text-h1-*</div>
+        </div>
+        <div class="type-row">
+          <div class="type-meta"><div class="type-label">H2</div><div class="type-specs">32px / 600 / 1.3</div></div>
+          <div class="type-preview" style="font-size:32px;font-weight:600">Empreendimentos</div>
+          <div class="type-token">--text-h2-*</div>
+        </div>
+        <div class="type-row">
+          <div class="type-meta"><div class="type-label">H3</div><div class="type-specs">24px / 600 / 1.3</div></div>
+          <div class="type-preview" style="font-size:24px;font-weight:600">Vivaz Penha — São Paulo</div>
+          <div class="type-token">--text-h3-*</div>
+        </div>
+        <div class="type-row">
+          <div class="type-meta"><div class="type-label">H4</div><div class="type-specs">20px / 700 / 1.5</div></div>
+          <div class="type-preview" style="font-size:20px;font-weight:700">Renda a partir de R$ 2.500,00</div>
+          <div class="type-token">--text-h4-*</div>
+        </div>
+        <div class="type-row">
+          <div class="type-meta"><div class="type-label">H5</div><div class="type-specs">18px / 700 / 1.5</div></div>
+          <div class="type-preview" style="font-size:18px;font-weight:700">1 a 2 dormitórios disponíveis</div>
+          <div class="type-token">--text-h5-*</div>
+        </div>
+        <div class="type-row">
+          <div class="type-meta"><div class="type-label">Body LG</div><div class="type-specs">18px / 400 / 1.5</div></div>
+          <div class="type-preview" style="font-size:18px;font-weight:400">Conheça a Vivaz e encontre o imóvel ideal para você</div>
+          <div class="type-token">--text-body-lg-*</div>
+        </div>
+        <div class="type-row">
+          <div class="type-meta"><div class="type-label">Body MD</div><div class="type-specs">16px / 400 / 1.5</div></div>
+          <div class="type-preview" style="font-size:16px;font-weight:400">Apartamentos com infraestrutura completa e lazer</div>
+          <div class="type-token">--text-body-md-*</div>
+        </div>
+        <div class="type-row">
+          <div class="type-meta"><div class="type-label">Body SM</div><div class="type-specs">14px / 400 / 1.5</div></div>
+          <div class="type-preview" style="font-size:14px;font-weight:400">Fale com um corretor e agende sua visita presencial</div>
+          <div class="type-token">--text-body-sm-*</div>
+        </div>
+        <div class="type-row">
+          <div class="type-meta"><div class="type-label">Label</div><div class="type-specs">16px / 600 / 1.3</div></div>
+          <div class="type-preview" style="font-size:16px;font-weight:600">Nome completo</div>
+          <div class="type-token">--text-label-*</div>
+        </div>
+        <div class="type-row">
+          <div class="type-meta"><div class="type-label">Caption</div><div class="type-specs">12px / 400 / 1.5</div></div>
+          <div class="type-preview" style="font-size:12px;font-weight:400;color:var(--color-dark-400)">* Valores sujeitos a alteração sem aviso prévio</div>
+          <div class="type-token">--text-caption-*</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ESPAÇAMENTO ===== -->
+    <section class="section" id="espacamento">
+      <div class="section-header">
+        <h2 class="section-title">Espaçamento</h2>
+        <span class="section-count">Base 4px</span>
+      </div>
+      <div class="spacing-grid">
+        <div style="background:var(--color-light-100);padding:10px 16px;border-radius:6px;display:grid;grid-template-columns:120px 60px 1fr 200px;align-items:center;gap:16px;font-size:11px;font-weight:600;color:var(--color-dark-300);text-transform:uppercase;letter-spacing:0.06em">
+          <span>Token</span><span>Valor</span><span>Visual</span><span>Uso semântico</span>
+        </div>
+        <div class="spacing-row" onclick="copyVal('var(--space-1)', this)">
+          <span class="token-name" style="font-size:12px">--space-1</span>
+          <span class="spacing-label">4px</span>
+          <div class="spacing-bar" style="width:4px;opacity:1;background:var(--color-roxo-500)"></div>
+          <span class="spacing-label">Gap ícone/texto</span>
+        </div>
+        <div class="spacing-row" onclick="copyVal('var(--space-2)', this)">
+          <span class="token-name" style="font-size:12px">--space-2</span>
+          <span class="spacing-label">8px</span>
+          <div class="spacing-bar" style="width:8px;opacity:1;background:var(--color-roxo-500)"></div>
+          <span class="spacing-label">Padding badges/tags</span>
+        </div>
+        <div class="spacing-row" onclick="copyVal('var(--space-3)', this)">
+          <span class="token-name" style="font-size:12px">--space-3</span>
+          <span class="spacing-label">12px</span>
+          <div class="spacing-bar" style="width:12px;opacity:1;background:var(--color-roxo-500)"></div>
+          <span class="spacing-label">Padding inputs</span>
+        </div>
+        <div class="spacing-row" onclick="copyVal('var(--space-4)', this)">
+          <span class="token-name" style="font-size:12px">--space-4</span>
+          <span class="spacing-label">16px</span>
+          <div class="spacing-bar" style="width:16px;opacity:1;background:var(--color-roxo-500)"></div>
+          <span class="spacing-label">Padding botões / gutter</span>
+        </div>
+        <div class="spacing-row" onclick="copyVal('var(--space-5)', this)">
+          <span class="token-name" style="font-size:12px">--space-5</span>
+          <span class="spacing-label">20px</span>
+          <div class="spacing-bar" style="width:20px;opacity:1;background:var(--color-roxo-500)"></div>
+          <span class="spacing-label">Gaps intermediários</span>
+        </div>
+        <div class="spacing-row" onclick="copyVal('var(--space-6)', this)">
+          <span class="token-name" style="font-size:12px">--space-6</span>
+          <span class="spacing-label">24px</span>
+          <div class="spacing-bar" style="width:24px;opacity:1;background:var(--color-roxo-500)"></div>
+          <span class="spacing-label">Padding cards maiores</span>
+        </div>
+        <div class="spacing-row" onclick="copyVal('var(--space-8)', this)">
+          <span class="token-name" style="font-size:12px">--space-8</span>
+          <span class="spacing-label">32px</span>
+          <div class="spacing-bar" style="width:32px;opacity:1;background:var(--color-roxo-500)"></div>
+          <span class="spacing-label">Espaço entre grupos</span>
+        </div>
+        <div class="spacing-row" onclick="copyVal('var(--space-10)', this)">
+          <span class="token-name" style="font-size:12px">--space-10</span>
+          <span class="spacing-label">40px</span>
+          <div class="spacing-bar" style="width:40px;opacity:1;background:var(--color-roxo-500)"></div>
+          <span class="spacing-label">Separação de seções</span>
+        </div>
+        <div class="spacing-row" onclick="copyVal('var(--space-12)', this)">
+          <span class="token-name" style="font-size:12px">--space-12</span>
+          <span class="spacing-label">48px</span>
+          <div class="spacing-bar" style="width:48px;opacity:1;background:var(--color-roxo-500)"></div>
+          <span class="spacing-label">Seções médias</span>
+        </div>
+        <div class="spacing-row" onclick="copyVal('var(--space-16)', this)">
+          <span class="token-name" style="font-size:12px">--space-16</span>
+          <span class="spacing-label">64px</span>
+          <div class="spacing-bar" style="width:64px;opacity:1;background:var(--color-roxo-500)"></div>
+          <span class="spacing-label">Blocos de página</span>
+        </div>
+        <div class="spacing-row" onclick="copyVal('var(--space-20)', this)">
+          <span class="token-name" style="font-size:12px">--space-20</span>
+          <span class="spacing-label">80px</span>
+          <div class="spacing-bar" style="width:80px;opacity:1;background:var(--color-roxo-500)"></div>
+          <span class="spacing-label">Hero / seções principais</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== BORDER RADIUS ===== -->
+    <section class="section" id="radius">
+      <div class="section-header">
+        <h2 class="section-title">Border Radius</h2>
+        <span class="section-count">6 tokens</span>
+      </div>
+      <div class="radius-grid">
+        <div class="radius-card">
+          <div class="radius-box" style="border-radius:4px"></div>
+          <div class="radius-info">
+            <div class="radius-name">Input</div>
+            <div class="radius-val">4px</div>
+            <div class="radius-token">--radius-sm</div>
+          </div>
+        </div>
+        <div class="radius-card">
+          <div class="radius-box" style="border-radius:8px"></div>
+          <div class="radius-info">
+            <div class="radius-name">Card SM</div>
+            <div class="radius-val">8px</div>
+            <div class="radius-token">--radius-md</div>
+          </div>
+        </div>
+        <div class="radius-card">
+          <div class="radius-box" style="border-radius:16px"></div>
+          <div class="radius-info">
+            <div class="radius-name">Card MD</div>
+            <div class="radius-val">16px</div>
+            <div class="radius-token">--radius-lg</div>
+          </div>
+        </div>
+        <div class="radius-card">
+          <div class="radius-box" style="border-radius:50px"></div>
+          <div class="radius-info">
+            <div class="radius-name">Button / Badge</div>
+            <div class="radius-val">50px</div>
+            <div class="radius-token">--radius-full</div>
+          </div>
+        </div>
+        <div class="radius-card">
+          <div class="radius-box" style="border-radius:78px"></div>
+          <div class="radius-info">
+            <div class="radius-name">Card Empreendimento</div>
+            <div class="radius-val">78px</div>
+            <div class="radius-token">--radius-card</div>
+          </div>
+        </div>
+        <div class="radius-card">
+          <div class="radius-box" style="border-radius:116px;height:40px"></div>
+          <div class="radius-info">
+            <div class="radius-name">Imagem Hero</div>
+            <div class="radius-val">116px</div>
+            <div class="radius-token">--radius-hero</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SOMBRAS ===== -->
+    <section class="section" id="sombras">
+      <div class="section-header">
+        <h2 class="section-title">Sombras</h2>
+        <span class="section-count">4 níveis</span>
+      </div>
+      <div class="shadow-grid">
+        <div class="shadow-demo" style="box-shadow:0 1px 3px rgba(10,12,16,0.08)">
+          <div class="shadow-label">Shadow SM</div>
+          <div class="shadow-css">--shadow-sm</div>
+          <div class="shadow-css">Hover cards planos</div>
+        </div>
+        <div class="shadow-demo" style="box-shadow:0 4px 12px rgba(10,12,16,0.12)">
+          <div class="shadow-label">Shadow MD</div>
+          <div class="shadow-css">--shadow-md</div>
+          <div class="shadow-css">Cards com elevação</div>
+        </div>
+        <div class="shadow-demo" style="box-shadow:0 8px 24px rgba(10,12,16,0.16)">
+          <div class="shadow-label">Shadow LG</div>
+          <div class="shadow-css">--shadow-lg</div>
+          <div class="shadow-css">Modais, dropdowns</div>
+        </div>
+        <div class="shadow-demo" style="box-shadow:0 16px 48px rgba(10,12,16,0.20)">
+          <div class="shadow-label">Shadow XL</div>
+          <div class="shadow-css">--shadow-xl</div>
+          <div class="shadow-css">Alto destaque</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== BOTÕES ===== -->
+    <section class="section" id="botoes">
+      <div class="section-header">
+        <h2 class="section-title">Botões</h2>
+      </div>
+      <div class="component-group">
+        <div class="component-group-title">Variantes</div>
+        <div class="component-demo">
+          <button class="btn btn-primary">Saiba mais</button>
+          <button class="btn btn-secondary">Ver detalhes</button>
+          <button class="btn btn-accent">Fale com corretor</button>
+          <button class="btn btn-ghost">Cancelar</button>
+        </div>
+      </div>
+      <div class="component-group">
+        <div class="component-group-title">Tamanhos</div>
+        <div class="component-demo">
+          <button class="btn btn-primary btn-sm">Pequeno</button>
+          <button class="btn btn-primary">Padrão</button>
+          <button class="btn btn-primary btn-lg">Grande</button>
+        </div>
+      </div>
+      <div class="component-group">
+        <div class="component-group-title">Fundo escuro</div>
+        <div class="component-demo dark">
+          <button class="btn btn-primary">Saiba mais</button>
+          <button class="btn btn-secondary">Ver detalhes</button>
+          <button class="btn btn-accent">Agendar visita</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== BADGES ===== -->
+    <section class="section" id="badges">
+      <div class="section-header">
+        <h2 class="section-title">Badges</h2>
+      </div>
+      <div class="component-demo" style="gap:10px">
+        <span class="badge badge-primary">Vivaz</span>
+        <span class="badge badge-secondary">Disponível</span>
+        <span class="badge badge-accent">Lançamento</span>
+        <span class="badge badge-success">Entregue</span>
+        <span class="badge badge-error">Esgotado</span>
+        <span class="badge badge-neutral">Em obras</span>
+      </div>
+    </section>
+
+    <!-- ===== INPUTS ===== -->
+    <section class="section" id="inputs">
+      <div class="section-header">
+        <h2 class="section-title">Inputs</h2>
+      </div>
+      <div class="component-demo" style="flex-direction:column;align-items:flex-start;gap:20px">
+        <div class="input-wrap">
+          <label class="input-label">Nome completo</label>
+          <input class="input-field" type="text" placeholder="Digite seu nome">
+        </div>
+        <div class="input-wrap">
+          <label class="input-label">Telefone</label>
+          <input class="input-field" type="tel" placeholder="(11) 90000-0000">
+          <span class="input-helper">Entraremos em contato por este número</span>
+        </div>
+        <div class="input-wrap">
+          <label class="input-label">Renda familiar</label>
+          <input class="input-field" type="text" placeholder="R$ 0,00" style="border-color:var(--color-error)">
+          <span class="input-helper" style="color:var(--color-error)">Campo obrigatório</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CARDS ===== -->
+    <section class="section" id="cards">
+      <div class="section-header">
+        <h2 class="section-title">Cards</h2>
+      </div>
+      <div class="component-demo" style="background:var(--color-light-200);gap:24px;flex-wrap:wrap;justify-content:center">
+        <div class="card-empreendimento">
+          <div class="card-img">Imagem do empreendimento</div>
+          <div class="card-body">
+            <div class="card-tag">São Paulo · SP</div>
+            <div class="card-title">Vivaz Penha</div>
+            <div class="card-location">Penha, São Paulo</div>
+            <div class="card-price">A partir de <strong>R$ 220 mil</strong></div>
+            <div class="card-footer">
+              <span style="font-size:12px;color:var(--color-dark-400)">1 a 2 dorms · 38 m²</span>
+              <a href="#" class="card-cta">Ver mais →</a>
+            </div>
+          </div>
+        </div>
+        <div class="card-empreendimento">
+          <div class="card-img" style="background:linear-gradient(135deg,#32C8C8 0%,#1a8f8f 100%)">Imagem do empreendimento</div>
+          <div class="card-body">
+            <div class="card-tag" style="background:var(--color-roxo-500);color:#fff">Lançamento</div>
+            <div class="card-title">Vivaz Butantã</div>
+            <div class="card-location">Butantã, São Paulo</div>
+            <div class="card-price">A partir de <strong>R$ 280 mil</strong></div>
+            <div class="card-footer">
+              <span style="font-size:12px;color:var(--color-dark-400)">2 dorms · 45 m²</span>
+              <a href="#" class="card-cta">Ver mais →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div id="toast">Copiado!</div>
+
+<script>
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 1800);
+}
+
+function copyColor(hex, el) {
+  navigator.clipboard.writeText(hex).then(function(){
+    showToast('Copiado: ' + hex);
+  });
+}
+
+function copyVal(val, el) {
+  navigator.clipboard.writeText(val).then(function(){
+    showToast('Copiado: ' + val);
+  });
+}
+
+document.querySelectorAll('.token-value').forEach(function(el) {
+  el.addEventListener('click', function() {
+    var val = el.textContent.trim();
+    navigator.clipboard.writeText(val).then(function(){
+      el.classList.add('copied');
+      el.textContent = 'Copiado!';
+      setTimeout(function(){
+        el.classList.remove('copied');
+        el.textContent = val;
+      }, 1200);
+    });
+  });
+});
+
+function setActive(el) {
+  document.querySelectorAll('.sidebar nav a').forEach(function(a){ a.classList.remove('active'); });
+  el.classList.add('active');
+}
+
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) {
+    if (e.isIntersecting) {
+      var id = e.target.id;
+      document.querySelectorAll('.sidebar nav a').forEach(function(a){
+        a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+      });
+    }
+  });
+}, { rootMargin: '-30% 0px -60% 0px' });
+
+document.querySelectorAll('.section[id]').forEach(function(s){ observer.observe(s); });
+</script>
+</body>
+</html>
