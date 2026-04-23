@@ -224,39 +224,206 @@
 </style>
 <title>Vivaz — Design Tokens & Style Guide</title>
 <style>
-  /* ===== TOKENS ===== */
+  /* ==========================================================================
+     TOKENS — Arquitetura em 3 camadas (espelhando o Figma)
+     ==========================================================================
+     Camada 1: Primitivos  (--viv-*)              → valores brutos da marca
+     Camada 2: Semânticos  (--bg-*, --text-*...)  → papel do token no UI
+     Camada 3: Contextuais (--secondary-*)        → combinações específicas
+     Legados  (--color-*, --space-*, --radius-*)  → mantidos como alias
+     ========================================================================== */
   :root {
-    --color-roxo-500: #960064;
-    --color-roxo-hover: #7a0051;
-    --color-turquesa-500: #32C8C8;
-    --color-amarelo-400: #FFD200;
-    --color-dark-900: #0A0C10;
-    --color-dark-800: #36383A;
-    --color-dark-600: #4D4D4F;
-    --color-dark-500: #66676A;
-    --color-dark-300: #969696;
-    --color-dark-200: #ACAEB2;
-    --color-light-100: #FFFFFF;
-    --color-light-200: #F0F1F2;
-    --color-light-300: #F1F1F1;
-    --color-light-400: #E4E4E4;
-    --color-light-500: #E0E0E0;
-    --color-success: #1F6743;
-    --color-warning: #FFD200;
-    --color-error: #D7332A;
-    --color-info: #3146A3;
-    --color-amarelo-solid: #FFD846;
-    --color-amarelo-outline: #FFD200;
-    /* Fontes embutidas em base64 no topo do arquivo — sem dependência de CDN */
-    --font-primary: 'graphie', sans-serif;
-    --font-secondary: 'nunito-sans', sans-serif;
-    --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
-    --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-10: 40px;
-    --space-12: 48px; --space-14: 56px; --space-16: 64px; --space-20: 80px;
-    --radius-sm: 4px; --radius-md: 8px; --radius-lg: 16px;
-    --radius-full: 50px;
-    /* Única sombra do design system — usada em menu/dropdown (Figma: X=0, Y=8, Blur=24, Spread=0, #000000 @ 16%) */
-    --shadow-menu: 0 8px 24px rgba(0, 0, 0, 0.16);
+
+    /* -------------------------------------------------------------------------
+       1) PRIMITIVOS — VIV/*  (Figma: variáveis nomeadas sob prefixo VIV/)
+       ------------------------------------------------------------------------- */
+    --viv-white:             #FFFFFF;
+    --viv-black:             #000000;
+    --viv-yellow:            #FFD200;       /* VIV/Yellow */
+    --viv-yellow-solid:      #FFD846;       /* botão amarelo (CTA em fundo claro) */
+    --viv-purple:            #960064;       /* VIV/Purple */
+    --viv-purple-hover:      #7A0051;
+    --viv-turquoise:         #32C8C8;       /* VIV/Turquoise */
+    --viv-turquoise-400:     #2FDADA;       /* hardcoded no Figma — virou token */
+    --viv-feedback-green:    #38C12C;       /* VIV/Feedback-Green */
+
+    /* Grays (VIV/Grey *, VIV/Text *) */
+    --viv-grey-1:            #F4F4F4;
+    --viv-grey-3:            #ACAEB2;
+    --viv-text-grey:         #66676A;
+    --viv-text-black:        #0A0C10;
+
+    /* Paleta auxiliar (observada em gradientes / ilustrações) */
+    --viv-blue-300:          #51A7E1;
+    --viv-blue-700:          #3146A3;
+    --viv-green-500:         #6EBB40;
+    --viv-green-800:         #1F6743;
+    --viv-orange-500:        #ED8721;
+    --viv-red-500:           #D7332A;
+
+    /* Alphas */
+    --viv-white-75:          rgba(255, 255, 255, 0.75);
+    --viv-black-16:          rgba(0, 0, 0, 0.16);
+
+    /* -------------------------------------------------------------------------
+       2) SEMÂNTICOS — papel do token no UI (tema dark = padrão do projeto)
+          Para trocar de tema, sobrescrever este bloco em [data-theme="light"].
+       ------------------------------------------------------------------------- */
+    --bg-default:            #4D4D4F;                 /* CORRIGIDO: Figma --BG-Default */
+    --bg-surface:            #36383A;                 /* cards e superfícies sobre o BG */
+    --bg-elevated:           var(--viv-black);
+
+    --text:                  var(--viv-white);        /* Figma: Text */
+    --text-2:                var(--viv-grey-3);       /* Figma: Text 2 */
+    --text-3:                var(--viv-text-grey);    /* Figma: Text 3 */
+    --text-inverse:          var(--viv-text-black);
+
+    --outline:               rgba(255, 255, 255, 0.20);
+    --outline-strong:        rgba(255, 255, 255, 0.40);
+
+    /* Feedback (WCAG) */
+    --feedback-success:      var(--viv-green-800);
+    --feedback-warning:      var(--viv-yellow);
+    --feedback-error:        var(--viv-red-500);
+    --feedback-info:         var(--viv-blue-700);
+
+    /* -------------------------------------------------------------------------
+       3) CONTEXTUAIS — pares de cor definidos no Figma (Secondary-*)
+       ------------------------------------------------------------------------- */
+    --secondary-purple-yellow: var(--viv-purple);     /* roxo em fundo amarelo  */
+    --secondary-yellow-white:  var(--viv-yellow);     /* amarelo em fundo claro */
+    --secondary-purple-white:  var(--viv-purple);     /* roxo em fundo claro    */
+
+    /* -------------------------------------------------------------------------
+       TIPOGRAFIA
+       Fontes embutidas em base64 no topo do arquivo — sem dependência de CDN.
+       ------------------------------------------------------------------------- */
+    --font-primary:          'graphie', sans-serif;
+    --font-secondary:        'nunito-sans', sans-serif;
+
+    /* Escala responsiva (Figma: "Auto (Size)") */
+    --fs-display:            clamp(2.5rem, 4vw + 1rem, 4rem);         /* 40 → 64 */
+    --fs-h1:                 clamp(2rem, 3vw + 1rem, 3rem);           /* 32 → 48 */
+    --fs-h2:                 clamp(1.5rem, 2vw + 0.75rem, 2.25rem);   /* 24 → 36 */
+    --fs-h3:                 clamp(1.25rem, 1.5vw + 0.5rem, 1.75rem); /* 20 → 28 */
+    --fs-body:               1rem;                                    /* 16     */
+    --fs-small:              0.875rem;                                /* 14     */
+    --fs-caption:            0.75rem;                                 /* 12     */
+
+    --lh-tight:              1.1;
+    --lh-snug:               1.25;
+    --lh-normal:             1.5;
+    --lh-relaxed:            1.75;
+
+    /* -------------------------------------------------------------------------
+       SPACING — escala --x* (Figma, múltiplos de 8)
+       ------------------------------------------------------------------------- */
+    --x0:                    0;
+    --x1:                    8px;
+    --x2:                    16px;
+    --x3:                    24px;
+    --x4:                    32px;
+    --x5:                    40px;
+    --x6:                    48px;
+    --x7:                    56px;
+    --x8:                    64px;
+    /* Margem lateral responsiva (Figma: --xMargins) */
+    --x-margins:             24px;
+
+    /* -------------------------------------------------------------------------
+       RADIUS
+       ------------------------------------------------------------------------- */
+    --radius-sm:             4px;
+    --radius-md:             8px;
+    --radius-lg:             16px;
+    --radius-full:           9999px;
+
+    /* -------------------------------------------------------------------------
+       SHADOWS
+       Única sombra do design system — usada em menu/dropdown.
+       Figma: X=0, Y=8, Blur=24, Spread=0, #000 @ 16%.
+       ------------------------------------------------------------------------- */
+    --shadow-menu:           0 8px 24px var(--viv-black-16);
+
+    /* -------------------------------------------------------------------------
+       BREAKPOINTS (informativos — usar em @media)
+       ------------------------------------------------------------------------- */
+    --bp-mobile:             375px;
+    --bp-tablet:             768px;
+    --bp-desktop:            1024px;
+    --bp-wide:               1366px;
+
+    /* -------------------------------------------------------------------------
+       Z-INDEX SCALE
+       ------------------------------------------------------------------------- */
+    --z-base:                1;
+    --z-dropdown:            100;
+    --z-sticky:               200;
+    --z-overlay:              300;
+    --z-modal:                400;
+    --z-toast:                500;
+
+    /* -------------------------------------------------------------------------
+       TRANSITIONS
+       ------------------------------------------------------------------------- */
+    --transition-fast:       120ms ease-out;
+    --transition-base:       200ms ease-out;
+    --transition-slow:       400ms ease-in-out;
+
+    /* -------------------------------------------------------------------------
+       FOCUS (WCAG 2.2 AA)
+       ------------------------------------------------------------------------- */
+    --focus-ring-color:      var(--viv-yellow);
+    --focus-ring-width:      2px;
+    --focus-ring-offset:     2px;
+
+    /* -------------------------------------------------------------------------
+       LEGADOS — apontam para a nova arquitetura (retrocompatibilidade)
+       Mantidos para não quebrar demos existentes no guide.
+       Novos componentes devem usar os tokens semânticos acima.
+       ------------------------------------------------------------------------- */
+    --color-roxo-500:        var(--viv-purple);
+    --color-roxo-hover:      var(--viv-purple-hover);
+    --color-turquesa-500:    var(--viv-turquoise);
+    --color-amarelo-400:     var(--viv-yellow);
+    --color-amarelo-solid:   var(--viv-yellow-solid);
+    --color-amarelo-outline: var(--viv-yellow);
+    --color-dark-900:        var(--bg-default);        /* CORRIGIDO: era #0A0C10 */
+    --color-dark-800:        #36383A;
+    --color-dark-600:        #4D4D4F;
+    --color-dark-500:        var(--viv-text-grey);
+    --color-dark-400:        #8A8C90;                  /* completando gap que estava indefinido */
+    --color-dark-300:        #969696;
+    --color-dark-200:        var(--viv-grey-3);
+    --color-light-100:       var(--viv-white);
+    --color-light-200:       #F0F1F2;
+    --color-light-300:       #F1F1F1;
+    --color-light-400:       #E4E4E4;
+    --color-light-500:       #E0E0E0;
+    --color-success:         var(--feedback-success);
+    --color-warning:         var(--feedback-warning);
+    --color-error:           var(--feedback-error);
+    --color-info:            var(--feedback-info);
+
+    /* Spacing legado mapeado para a escala --x* */
+    --space-1:               4px;
+    --space-2:               var(--x1);
+    --space-3:               12px;
+    --space-4:               var(--x2);
+    --space-5:               20px;
+    --space-6:               var(--x3);
+    --space-8:               var(--x4);
+    --space-10:              var(--x5);
+    --space-12:              var(--x6);
+    --space-14:              var(--x7);
+    --space-16:              var(--x8);
+    --space-20:              80px;
+  }
+
+  /* Foco global (WCAG 2.2 AA) */
+  :focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--focus-ring-offset);
   }
 
   /* ===== RESET & BASE ===== */
@@ -801,6 +968,18 @@
       <a href="#sombras" onclick="setActive(this)">
         <span class="dot" style="background:#4D4D4F"></span> Sombra
       </a>
+      <a href="#breakpoints" onclick="setActive(this)">
+        <span class="dot" style="background:#51A7E1"></span> Breakpoints
+      </a>
+      <a href="#zindex" onclick="setActive(this)">
+        <span class="dot" style="background:#6EBB40"></span> Z-index
+      </a>
+      <a href="#transitions" onclick="setActive(this)">
+        <span class="dot" style="background:#ED8721"></span> Transitions
+      </a>
+      <a href="#focus" onclick="setActive(this)">
+        <span class="dot" style="background:#FFD200"></span> Focus (a11y)
+      </a>
       <div class="section-label">Componentes</div>
       <a href="#botoes" onclick="setActive(this)">
         <span class="dot" style="background:#960064"></span> Botões
@@ -1174,6 +1353,177 @@
       </div>
       <div style="background:#fff8e0;border-left:3px solid #FFD200;padding:12px 16px;border-radius:0 8px 8px 0;margin-top:16px;font-size:13px;color:var(--color-dark-600)">
         <strong style="color:var(--color-dark-800)">Nota:</strong> o design da Vivaz não usa sombras como sistema escalonado (sm/md/lg). A única sombra documentada é a do menu/dropdown, extraída diretamente do Figma: <code>X=0 · Y=8 · Blur=24 · Spread=0 · #000000 @ 16%</code>.
+      </div>
+    </section>
+
+    <!-- ===== BREAKPOINTS ===== -->
+    <section class="section" id="breakpoints">
+      <div class="section-header">
+        <h2 class="section-title">Breakpoints</h2>
+        <span class="section-count">4 tokens · mobile-first</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px">
+        <div style="background:#fff;border:1px solid var(--color-light-400);border-radius:12px;padding:18px;position:relative;overflow:hidden">
+          <div style="display:flex;align-items:flex-end;gap:4px;height:60px;margin-bottom:12px">
+            <div style="width:24px;height:30px;background:var(--color-roxo-500);border-radius:3px 3px 0 0"></div>
+          </div>
+          <div style="font-size:13px;font-weight:700;color:var(--color-dark-800)">Mobile</div>
+          <div style="font-family:'Courier New',monospace;font-size:11px;color:var(--color-dark-500);margin-top:2px">375px</div>
+          <div style="font-family:'Courier New',monospace;font-size:10px;color:var(--color-roxo-500);margin-top:6px">--bp-mobile</div>
+        </div>
+        <div style="background:#fff;border:1px solid var(--color-light-400);border-radius:12px;padding:18px;position:relative;overflow:hidden">
+          <div style="display:flex;align-items:flex-end;gap:4px;height:60px;margin-bottom:12px">
+            <div style="width:48px;height:45px;background:var(--color-turquesa-500);border-radius:3px 3px 0 0"></div>
+          </div>
+          <div style="font-size:13px;font-weight:700;color:var(--color-dark-800)">Tablet</div>
+          <div style="font-family:'Courier New',monospace;font-size:11px;color:var(--color-dark-500);margin-top:2px">768px</div>
+          <div style="font-family:'Courier New',monospace;font-size:10px;color:var(--color-roxo-500);margin-top:6px">--bp-tablet</div>
+        </div>
+        <div style="background:#fff;border:1px solid var(--color-light-400);border-radius:12px;padding:18px;position:relative;overflow:hidden">
+          <div style="display:flex;align-items:flex-end;gap:4px;height:60px;margin-bottom:12px">
+            <div style="width:72px;height:55px;background:var(--color-amarelo-400);border-radius:3px 3px 0 0"></div>
+          </div>
+          <div style="font-size:13px;font-weight:700;color:var(--color-dark-800)">Desktop</div>
+          <div style="font-family:'Courier New',monospace;font-size:11px;color:var(--color-dark-500);margin-top:2px">1024px</div>
+          <div style="font-family:'Courier New',monospace;font-size:10px;color:var(--color-roxo-500);margin-top:6px">--bp-desktop</div>
+        </div>
+        <div style="background:#fff;border:1px solid var(--color-light-400);border-radius:12px;padding:18px;position:relative;overflow:hidden">
+          <div style="display:flex;align-items:flex-end;gap:4px;height:60px;margin-bottom:12px">
+            <div style="width:96px;height:60px;background:var(--color-dark-900);border-radius:3px 3px 0 0"></div>
+          </div>
+          <div style="font-size:13px;font-weight:700;color:var(--color-dark-800)">Wide</div>
+          <div style="font-family:'Courier New',monospace;font-size:11px;color:var(--color-dark-500);margin-top:2px">1366px</div>
+          <div style="font-family:'Courier New',monospace;font-size:10px;color:var(--color-roxo-500);margin-top:6px">--bp-wide</div>
+        </div>
+      </div>
+      <div style="background:var(--color-light-100);border:1px solid var(--color-light-400);border-radius:8px;padding:14px 18px;margin-top:16px;font-family:'Courier New',monospace;font-size:12px;color:var(--color-dark-700,#3a3a3a);line-height:1.7">
+        <span style="color:var(--color-dark-400)">/* Uso em media query */</span><br>
+        @media (min-width: 768px) { <span style="color:var(--color-dark-400)">/* tablet+ */</span> }<br>
+        @media (min-width: 1024px) { <span style="color:var(--color-dark-400)">/* desktop+ */</span> }
+      </div>
+    </section>
+
+    <!-- ===== Z-INDEX ===== -->
+    <section class="section" id="zindex">
+      <div class="section-header">
+        <h2 class="section-title">Z-index Scale</h2>
+        <span class="section-count">6 camadas · base → toast</span>
+      </div>
+      <div style="background:#fff;border:1px solid var(--color-light-400);border-radius:12px;padding:32px;display:flex;justify-content:center;align-items:center;min-height:280px;perspective:1000px">
+        <div style="position:relative;width:320px;height:220px">
+          <div style="position:absolute;left:0;top:0;width:200px;height:120px;background:var(--color-light-300);border:1px solid var(--color-light-400);border-radius:8px;padding:12px;font-size:11px;color:var(--color-dark-600)">
+            <strong style="color:var(--color-dark-800)">base</strong> · z: 1
+            <div style="font-family:'Courier New',monospace;font-size:10px;color:var(--color-roxo-500);margin-top:4px">--z-base</div>
+          </div>
+          <div style="position:absolute;left:20px;top:20px;width:200px;height:120px;background:#E6F4FA;border:1px solid #51A7E1;border-radius:8px;padding:12px;font-size:11px;color:var(--color-dark-600)">
+            <strong style="color:var(--color-dark-800)">dropdown</strong> · z: 100
+            <div style="font-family:'Courier New',monospace;font-size:10px;color:var(--color-roxo-500);margin-top:4px">--z-dropdown</div>
+          </div>
+          <div style="position:absolute;left:40px;top:40px;width:200px;height:120px;background:#E7F7E5;border:1px solid #6EBB40;border-radius:8px;padding:12px;font-size:11px;color:var(--color-dark-600)">
+            <strong style="color:var(--color-dark-800)">sticky</strong> · z: 200
+            <div style="font-family:'Courier New',monospace;font-size:10px;color:var(--color-roxo-500);margin-top:4px">--z-sticky</div>
+          </div>
+          <div style="position:absolute;left:60px;top:60px;width:200px;height:120px;background:#FFF1E0;border:1px solid #ED8721;border-radius:8px;padding:12px;font-size:11px;color:var(--color-dark-600)">
+            <strong style="color:var(--color-dark-800)">overlay</strong> · z: 300
+            <div style="font-family:'Courier New',monospace;font-size:10px;color:var(--color-roxo-500);margin-top:4px">--z-overlay</div>
+          </div>
+          <div style="position:absolute;left:80px;top:80px;width:200px;height:120px;background:#FDE7E5;border:1px solid #D7332A;border-radius:8px;padding:12px;font-size:11px;color:var(--color-dark-600)">
+            <strong style="color:var(--color-dark-800)">modal</strong> · z: 400
+            <div style="font-family:'Courier New',monospace;font-size:10px;color:var(--color-roxo-500);margin-top:4px">--z-modal</div>
+          </div>
+          <div style="position:absolute;left:100px;top:100px;width:200px;height:120px;background:#FFF8C6;border:1px solid #FFD200;border-radius:8px;padding:12px;font-size:11px;color:var(--color-dark-600);box-shadow:0 8px 24px rgba(0,0,0,0.16)">
+            <strong style="color:var(--color-dark-800)">toast</strong> · z: 500
+            <div style="font-family:'Courier New',monospace;font-size:10px;color:var(--color-roxo-500);margin-top:4px">--z-toast</div>
+          </div>
+        </div>
+      </div>
+      <div style="background:#fff8e0;border-left:3px solid #FFD200;padding:12px 16px;border-radius:0 8px 8px 0;margin-top:16px;font-size:13px;color:var(--color-dark-600)">
+        <strong style="color:var(--color-dark-800)">Regra:</strong> sempre usar os tokens em vez de valores arbitrários (<code>z-index: 9999</code>). Se precisar de uma camada nova, adicione-a ao <code>:root</code> — isso mantém a hierarquia documentada e evita guerra de z-index.
+      </div>
+    </section>
+
+    <!-- ===== TRANSITIONS ===== -->
+    <section class="section" id="transitions">
+      <div class="section-header">
+        <h2 class="section-title">Transitions</h2>
+        <span class="section-count">3 durações · hover para testar</span>
+      </div>
+      <style>
+        .trx-demo { transition-property: transform, background-color, border-color, color; cursor: pointer; border: 2px solid var(--color-roxo-500); background: #fff; color: var(--color-roxo-500); padding: 16px 24px; border-radius: 8px; font-family: var(--font-primary); font-weight: 600; font-size: 14px; }
+        .trx-demo:hover { background: var(--color-roxo-500); color: #fff; transform: translateY(-4px); }
+        .trx-fast { transition-duration: 120ms; transition-timing-function: ease-out; }
+        .trx-base { transition-duration: 200ms; transition-timing-function: ease-out; }
+        .trx-slow { transition-duration: 400ms; transition-timing-function: ease-in-out; }
+      </style>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px">
+        <div style="background:#fff;border:1px solid var(--color-light-400);border-radius:12px;padding:24px;text-align:center">
+          <button class="trx-demo trx-fast">Passe o mouse</button>
+          <div style="font-size:13px;font-weight:700;color:var(--color-dark-800);margin-top:14px">Fast</div>
+          <div style="font-family:'Courier New',monospace;font-size:11px;color:var(--color-dark-500);margin-top:2px">120ms ease-out</div>
+          <div style="font-family:'Courier New',monospace;font-size:10px;color:var(--color-roxo-500);margin-top:6px">--transition-fast</div>
+          <div style="font-size:11px;color:var(--color-dark-500);margin-top:8px">Hover, foco, toggles</div>
+        </div>
+        <div style="background:#fff;border:1px solid var(--color-light-400);border-radius:12px;padding:24px;text-align:center">
+          <button class="trx-demo trx-base">Passe o mouse</button>
+          <div style="font-size:13px;font-weight:700;color:var(--color-dark-800);margin-top:14px">Base</div>
+          <div style="font-family:'Courier New',monospace;font-size:11px;color:var(--color-dark-500);margin-top:2px">200ms ease-out</div>
+          <div style="font-family:'Courier New',monospace;font-size:10px;color:var(--color-roxo-500);margin-top:6px">--transition-base</div>
+          <div style="font-size:11px;color:var(--color-dark-500);margin-top:8px">Padrão para a maioria dos componentes</div>
+        </div>
+        <div style="background:#fff;border:1px solid var(--color-light-400);border-radius:12px;padding:24px;text-align:center">
+          <button class="trx-demo trx-slow">Passe o mouse</button>
+          <div style="font-size:13px;font-weight:700;color:var(--color-dark-800);margin-top:14px">Slow</div>
+          <div style="font-family:'Courier New',monospace;font-size:11px;color:var(--color-dark-500);margin-top:2px">400ms ease-in-out</div>
+          <div style="font-family:'Courier New',monospace;font-size:10px;color:var(--color-roxo-500);margin-top:6px">--transition-slow</div>
+          <div style="font-size:11px;color:var(--color-dark-500);margin-top:8px">Modais, drawers, transições de página</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FOCUS (A11Y) ===== -->
+    <section class="section" id="focus">
+      <div class="section-header">
+        <h2 class="section-title">Focus States</h2>
+        <span class="section-count">WCAG 2.2 AA · Tab para testar</span>
+      </div>
+      <style>
+        .focus-demo-btn { font-family: var(--font-primary); font-weight: 600; font-size: 14px; padding: 12px 22px; border-radius: 8px; border: 2px solid var(--color-roxo-500); background: var(--color-roxo-500); color: #fff; cursor: pointer; }
+        .focus-demo-btn.ghost { background: #fff; color: var(--color-roxo-500); }
+        .focus-demo-input { font-family: var(--font-primary); font-size: 14px; padding: 12px 16px; border-radius: 8px; border: 1px solid var(--color-light-400); background: #fff; color: var(--color-dark-900); min-width: 240px; }
+        .focus-demo-link { color: var(--color-roxo-500); font-weight: 600; text-decoration: underline; cursor: pointer; }
+      </style>
+      <div style="background:#fff;border:1px solid var(--color-light-400);border-radius:12px;padding:28px;display:flex;flex-wrap:wrap;gap:18px;align-items:center">
+        <button class="focus-demo-btn" type="button">Botão sólido</button>
+        <button class="focus-demo-btn ghost" type="button">Botão secundário</button>
+        <input class="focus-demo-input" type="text" placeholder="Campo de input">
+        <a class="focus-demo-link" href="javascript:void(0)">Link textual</a>
+      </div>
+      <div style="background:var(--color-light-100);border:1px solid var(--color-light-400);border-radius:8px;padding:14px 18px;margin-top:16px;font-family:'Courier New',monospace;font-size:12px;color:var(--color-dark-700,#3a3a3a);line-height:1.7">
+        <span style="color:var(--color-dark-400)">/* Aplicado globalmente a qualquer elemento focável */</span><br>
+        :focus-visible {<br>
+        &nbsp;&nbsp;outline: <span style="color:var(--color-roxo-500)">var(--focus-ring-width)</span> solid <span style="color:var(--color-roxo-500)">var(--focus-ring-color)</span>;<br>
+        &nbsp;&nbsp;outline-offset: <span style="color:var(--color-roxo-500)">var(--focus-ring-offset)</span>;<br>
+        }
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:16px">
+        <div style="background:#fff;border:1px solid var(--color-light-400);border-radius:8px;padding:14px">
+          <div style="font-size:11px;color:var(--color-dark-500);text-transform:uppercase;letter-spacing:0.05em">Cor</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:6px"><span style="display:inline-block;width:20px;height:20px;border-radius:4px;background:#FFD200"></span><code style="font-size:12px">var(--viv-yellow)</code></div>
+          <div style="font-family:'Courier New',monospace;font-size:10px;color:var(--color-roxo-500);margin-top:4px">--focus-ring-color</div>
+        </div>
+        <div style="background:#fff;border:1px solid var(--color-light-400);border-radius:8px;padding:14px">
+          <div style="font-size:11px;color:var(--color-dark-500);text-transform:uppercase;letter-spacing:0.05em">Espessura</div>
+          <div style="font-size:14px;color:var(--color-dark-800);margin-top:6px;font-weight:600">2px</div>
+          <div style="font-family:'Courier New',monospace;font-size:10px;color:var(--color-roxo-500);margin-top:4px">--focus-ring-width</div>
+        </div>
+        <div style="background:#fff;border:1px solid var(--color-light-400);border-radius:8px;padding:14px">
+          <div style="font-size:11px;color:var(--color-dark-500);text-transform:uppercase;letter-spacing:0.05em">Offset</div>
+          <div style="font-size:14px;color:var(--color-dark-800);margin-top:6px;font-weight:600">2px</div>
+          <div style="font-family:'Courier New',monospace;font-size:10px;color:var(--color-roxo-500);margin-top:4px">--focus-ring-offset</div>
+        </div>
+      </div>
+      <div style="background:#fff8e0;border-left:3px solid #FFD200;padding:12px 16px;border-radius:0 8px 8px 0;margin-top:16px;font-size:13px;color:var(--color-dark-600)">
+        <strong style="color:var(--color-dark-800)">Por que <code>:focus-visible</code> e não <code>:focus</code>?</strong> <code>:focus-visible</code> só aparece quando o usuário navega pelo teclado (Tab) — não polui a UI com rings em cliques de mouse. É o padrão recomendado pela WCAG 2.2 e suportado por todos os browsers modernos.
       </div>
     </section>
 
